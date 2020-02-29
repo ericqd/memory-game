@@ -7,10 +7,11 @@ public class MemoryGame{
         String[][] cardValue = new String[4][4]; 
         boolean[][] cardState = new boolean[4][4];
         String fileChoice = getFileChoice();
-        String[][] array = readFile(fileChoice,cardValue);
-        System.out.println(array);
+        readFile(fileChoice,cardValue);
     }
-    public static String getFileChoice(){
+
+
+    public static String getFileChoice() {
         System.out.println("Memory Game");
         System.out.println("1. Letters");
         System.out.println("2. Numbers");
@@ -34,19 +35,25 @@ public class MemoryGame{
         return fileChoice;
     }
     public static String[][] readFile(String fileChoice, String [][] array){
+        int row = 4;
+        int col = 4;
         try{
             Scanner read = new Scanner(new File(fileChoice));
-            while(read.hasNextLine()){
-                for( int i = 0; i < array.length; i++){
-                    String line = read.nextLine();
-                    for(int j = 0; j < array.length; j++){
-                        array[i][j] = line;
-                    }
+            for(int i = 0; i < row && read.hasNextLine(); i++){
+                for(int j = 0; j < col && read.hasNextLine(); j++){
+                    String card = read.nextLine();
+                    array[i][j] = card;
                 }
-            }
+            } 
             read.close();
         } catch(FileNotFoundException fnf){
             System.out.println("File was not found");
+        }
+        for(int i=0;i < row; i++){
+            for(int j=0; j < col; j++){
+                System.out.print(array[i][j] + " ");
+            }
+            System.out.println();
         }
         return array;
     }
