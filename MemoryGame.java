@@ -10,7 +10,10 @@ public class MemoryGame{
         readFile(fileChoice,cardValue);
         shuffleDeck(cardValue);
         displayBoard(cardValue, cardState);
-        int userChoice = getChoice();
+        String userSelection1 = getChoice(cardValue);
+        String userSelection2= getChoice(cardValue);
+        System.out.println(userSelection1);
+        System.out.println(userSelection2);
 
     }
 
@@ -102,36 +105,59 @@ public class MemoryGame{
             System.out.println("+----+   +----+   +----+   +----+");
         }
     }
-    public static String[][] getChoice(String[][] array){
+    public static String getChoice(String[][] array){
+        System.out.println("Enter choice: ");
         int userChoice = CheckInput.getIntRange(1,16);
+        int row = 0;
+        int col = 0;
         if(userChoice <= 4 && userChoice % 4 != 0){
-            int row = 0; 
-            int col = (userChoice % 4) - 1; 
+            row = 0; 
+            col = (userChoice % 4) - 1; 
         }
         else if(userChoice > 4 && userChoice < 8 && userChoice % 4 != 0){
-            int row = 1;
-            int col = (userChoice % 4) - 1;
+            row = 1;
+            col = (userChoice % 4) - 1;
         }
         else if (userChoice > 8 && userChoice < 12 && userChoice % 4 != 0){
-            int row = 2;
-            int col = (userChoice % 4)-1; 
+            row = 2;
+            col = (userChoice % 4)-1; 
         }
         else if(userChoice > 12 && userChoice < 16 && userChoice % 4 != 0){
-            int row = 3;
-            int col = (userChoice % 4)-1; 
+            row = 3;
+            col = (userChoice % 4)-1; 
         }
-        else if(userChoice % 4 == 0){
-            int row = (userChoice % 4) + 1;
-            int col = 3;
+        else if(userChoice == 4){
+            row = 0;
+            col = 3;
+        }
+        else if(userChoice == 8){
+            row = 1;
+            col = 3;
+        }
+        else if(userChoice == 12){
+            row = 2;
+            col = 3;
+        }
+        else if(userChoice == 16){
+            row = 3;
+            col = 3;
         }
         String location = array[row][col];
+        return location;
     }
-    public static void flipChoice(int input, boolean[][] array2){
+    public static void flipChoice(String selection1, String selection2, boolean[][] array2, String[][] array, boolean flip){
         for(int i = 0; i < array2.length; i++){
             for(int j = 0; j < array2[i].length ;j++ ){
                 array2[i][j] = false;
             }
         }
-
+        
+    }
+    public static boolean isMatch(String selection1, String selection2, String[][]array){
+        boolean match = false;
+        if(selection1 == selection2){
+            match = true;
+        }
+        return match;
     }
 }
