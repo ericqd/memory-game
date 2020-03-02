@@ -83,26 +83,55 @@ public class MemoryGame{
         return array;
     }
     public static void displayBoard(String[][] array, boolean[][] array2){
-        for(int i = 0; i < 4; i++){
-            System.out.println("+-------+   +-------+   +-------+   +-------+");
-            for(int j = 0; j < 4; j++){
-                if(array2[i][j]){
-                    System.out.print(array[i][j]);
-                    System.out.println(" ");
+        int num = 0;
+        while(num != 16){
+            for(int i = 0; i < 4; i++){
+                System.out.println("+----+   +----+   +----+   +----+");
+                for(int j = 0; j < 4; j++){
+                    if(array2[i][j]){
+                        System.out.print(array[i][j]);
+                        System.out.println(" ");
+                    }
+                    else{
+                        num++;
+                        System.out.print("|   " +(num)+ " | ");
+                    }
                 }
-                else{
-                    System.out.print("|" + (i+1) + "      |   ");
-                }
+                System.out.println();
             }
-            System.out.println();
+            System.out.println("+----+   +----+   +----+   +----+");
         }
-        System.out.println("+-------+   +-------+   +-------+   +-------+");
     }
-    public static int getChoice(){
+    public static String[][] getChoice(String[][] array){
         int userChoice = CheckInput.getIntRange(1,16);
-        return userChoice;
+        if(userChoice <= 4 && userChoice % 4 != 0){
+            int row = 0; 
+            int col = (userChoice % 4) - 1; 
+        }
+        else if(userChoice > 4 && userChoice < 8 && userChoice % 4 != 0){
+            int row = 1;
+            int col = (userChoice % 4) - 1;
+        }
+        else if (userChoice > 8 && userChoice < 12 && userChoice % 4 != 0){
+            int row = 2;
+            int col = (userChoice % 4)-1; 
+        }
+        else if(userChoice > 12 && userChoice < 16 && userChoice % 4 != 0){
+            int row = 3;
+            int col = (userChoice % 4)-1; 
+        }
+        else if(userChoice % 4 == 0){
+            int row = (userChoice % 4) + 1;
+            int col = 3;
+        }
+        String location = array[row][col];
     }
     public static void flipChoice(int input, boolean[][] array2){
+        for(int i = 0; i < array2.length; i++){
+            for(int j = 0; j < array2[i].length ;j++ ){
+                array2[i][j] = false;
+            }
+        }
 
     }
 }
