@@ -11,17 +11,19 @@ public class MemoryGame{
         shuffleDeck(cardValue);
         int userSelection1 = getChoice();
         flipChoice(userSelection1,cardValue,cardState, true);
+        displayBoard(cardValue, cardState);
         int userSelection2= getChoice();
         flipChoice(userSelection2,cardValue,cardState,true);
+        displayBoard(cardValue, cardState);
         boolean match = isMatch(userSelection1,userSelection2,cardValue);
-        int numOfDown= 16;
-            while(numOfDown > 0){
-                if(match == true){
-                    System.out.println("Cards match!");
-                    numOfDown -=2;
-                }
-    }
+        int faceDown = 16;
+        while(faceDown > 16)
+            if(match == true){
+                System.out.println("Match!");
+                faceDown -=2;
+            }   
 }
+
 
 
     public static String getFileChoice() {
@@ -92,23 +94,21 @@ public class MemoryGame{
         return array;
     }
     public static void displayBoard(String[][] array, boolean[][] array2){
-        int num = 0;
+        int num = 1;
             for(int i = 0; i < 4; i++){
                 System.out.println("+- - - -+" + " " + "+- - - -+" + " " + "+- - - -+" + " " + "+- - - -+");
                 System.out.println("|       |" + " " + "|       |" + " " + "|       |" + " " + "|       |");
                 for(int j = 0; j < 4; j++){
                     String size = Integer.toString(num);
                     if(array2[i][j]){
-                        System.out.print(array[i][j]);
-                        System.out.println(" ");
+                        System.out.print("| " +array[i][j]+ "  |" + " ");
+                        num++;
                     }
                     else if(size.length() >=2){
-                        num++;
-                        System.out.print("|   " +(num)+ "  |" + " ");
+                        System.out.print("|   " +(num++)+ "  |" + " ");
                     }
                     else{
-                        num++;
-                        System.out.print("|   " +(num)+ "   |" + " ");
+                        System.out.print("|   " +(num++)+ "   |" + " ");
                     }
                 }
                 System.out.println("");
@@ -125,15 +125,9 @@ public class MemoryGame{
         // String location = array[row][col];
         return userChoice;
     }
-    public static Boolean flipChoice(int input,String[][] array, boolean[][] array2, boolean flip){
+    public static void flipChoice(int input,String[][] array, boolean[][] array2, boolean flip){
         int row = 0;
         int col = 0;
-        displayBoard(array,array2);
-        for(int i = 0; i < array2.length; i++){
-            for(int j = 0; j < array2[i].length ;j++ ){
-                array2[i][j] = false;
-            }
-        }
         if(input <= 4 && input % 4 != 0){
             row = 0; 
             col = (input % 4) - 1; 
@@ -166,15 +160,10 @@ public class MemoryGame{
             row = 3;
             col = 3;
         }
-        boolean location = array2[row][col];
-        if(location == false){
-            location = flip;
+        array2[row][col] = true;
+        if(array2[row][col] == false){
+            array2[row][col] = flip;
         }
-        if(checkFlipped(input,array2)){
-            System.out.println("Card is already flipped");
-            flipChoice(input,array,array2,flip);
-        }
-        return location;
     }
     public static Boolean isMatch(int input1, int input2, String[][]array){
         int row = 0;
@@ -297,4 +286,7 @@ public class MemoryGame{
         }
         return false;
         }
+        //if(checkFlipped(input,array2) == true){
+           // System.out.println("Card is already flipped");
+           // flipChoice(input,array,array2,flip);
 }
