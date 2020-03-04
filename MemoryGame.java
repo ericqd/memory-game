@@ -1,7 +1,10 @@
 import java.util.*;
 import java.util.Scanner;
 import java.io.*;
-
+/**
+ * Author: Eric Dao
+ * Date:3/2/2020
+ */
 public class MemoryGame{
     public static void main(String[] args){
         String[][] cardValue = new String[4][4]; 
@@ -9,23 +12,49 @@ public class MemoryGame{
         String fileChoice = getFileChoice();
         readFile(fileChoice,cardValue);
         shuffleDeck(cardValue);
-        int userSelection1 = getChoice();
-        flipChoice(userSelection1,cardValue,cardState, true);
-        displayBoard(cardValue, cardState);
-        int userSelection2= getChoice();
-        flipChoice(userSelection2,cardValue,cardState,true);
-        displayBoard(cardValue, cardState);
-        boolean match = isMatch(userSelection1,userSelection2,cardValue);
         int faceDown = 16;
-        while(faceDown > 16)
-            if(match == true){
+        boolean isTrue = false;
+        int userSelection1=0;
+        int userSelection2=0;
+        while(faceDown > 0){
+            while(!isTrue){
+                userSelection1 = getChoice();
+                if(!checkFlipped(userSelection1, cardState)){
+                    flipChoice(userSelection1,cardState);
+                    displayBoard(cardValue, cardState);
+                    isTrue = true;
+                }
+                else{
+                    System.out.println("Card is already flipped");
+                }
+            }
+            isTrue= false;
+    
+            while(!isTrue){
+                userSelection2 = getChoice();
+                if(!checkFlipped(userSelection2,cardState)){
+                    flipChoice(userSelection2,cardState);
+                    displayBoard(cardValue, cardState);
+                    isTrue = true;
+                }
+                else{
+                    System.out.println("Card is already flipped");
+                }
+            }
+            if(isMatch(userSelection1,userSelection2,cardValue)){
                 System.out.println("Match!");
                 faceDown -=2;
-            }   
+            }
+            else if(isMatch(userSelection1,userSelection2,cardValue) == false){
+                flipChoice(userSelection1,cardState);
+                flipChoice(userSelection2,cardState);
+            }
+        }
 }
-
-
-
+/**
+ * Displays menu for files and asks user for the text file
+ * @return fileChoice
+ */
     public static String getFileChoice() {
         System.out.println("Memory Game");
         System.out.println("1. Letters");
@@ -49,6 +78,12 @@ public class MemoryGame{
         }
         return fileChoice;
     }
+    /**
+     * Reads the file and places the element in the text file into the 2d array
+     * @param fileChoice
+     * @param array
+     * @return array
+     */
     public static String[][] readFile(String fileChoice, String [][] array){
         int row = 4;
         int col = 4;
@@ -68,6 +103,11 @@ public class MemoryGame{
         }
         return array;
     }
+    /**
+     * Shuffles the 4x4 array of elements
+     * @param array
+     * @return array
+     */
     public static String[][] shuffleDeck(String [][] array){
         int count = 0;
         int row = 4;
@@ -93,6 +133,11 @@ public class MemoryGame{
         }
         return array;
     }
+    /**
+     * Displays a 4x4 grid of cards from 1-16 if card is flipped display the value
+     * @param array
+     * @param array2
+     */
     public static void displayBoard(String[][] array, boolean[][] array2){
         int num = 1;
             for(int i = 0; i < 4; i++){
@@ -119,13 +164,17 @@ public class MemoryGame{
             }
             System.out.println("");
         }
+    /**
+     * Gets the user input to choose card
+     * @return userChoice
+     */
     public static int getChoice(){
         System.out.println("Enter choice: ");
         int userChoice = CheckInput.getIntRange(1,16);
         // String location = array[row][col];
         return userChoice;
     }
-    public static void flipChoice(int input,String[][] array, boolean[][] array2, boolean flip){
+    public static void flipChoice(int input, boolean[][] array2){
         int row = 0;
         int col = 0;
         if(input <= 4 && input % 4 != 0){
@@ -160,9 +209,10 @@ public class MemoryGame{
             row = 3;
             col = 3;
         }
-        array2[row][col] = true;
         if(array2[row][col] == false){
-            array2[row][col] = flip;
+            array2[row][col] = true;
+        } else {
+            array2[row][col] = false;
         }
     }
     public static Boolean isMatch(int input1, int input2, String[][]array){
@@ -236,14 +286,10 @@ public class MemoryGame{
             col2 = 3;
         }
         String location2 = array[row2][col2];
-        boolean match = false;
-        if(location1 == location2){
-            match = true;
+        if(location1.equals(location2)){
+            return true;
         }
-        else{
-            System.out.println("Don't Match");
-        }
-        return match;
+        return false;
     }
     public static Boolean checkFlipped(int input,boolean[][] array2){
         int row = 0;
@@ -280,8 +326,7 @@ public class MemoryGame{
             row = 3;
             col = 3;
         }
-        boolean location = array2[row][col];
-        if(location){
+        if(array2[row][col]){
             return true;
         }
         return false;
